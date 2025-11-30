@@ -74,13 +74,17 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, items, totalPr
       alert('연락처를 입력해주세요.');
       return;
     }
-    if (!formData.address.trim()) {
-      alert('도로명 주소를 입력해주세요.');
-      return;
-    }
-    if (!formData.detailAddress.trim()) {
-      alert('상세 주소를 입력해주세요.');
-      return;
+    
+    // Address is mandatory ONLY if NOT 32nd batch
+    if (!isBatch32) {
+      if (!formData.address.trim()) {
+        alert('도로명 주소를 입력해주세요.');
+        return;
+      }
+      if (!formData.detailAddress.trim()) {
+        alert('상세 주소를 입력해주세요.');
+        return;
+      }
     }
     
     // 32nd Batch Validation
@@ -103,8 +107,8 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, items, totalPr
     const orderData = {
       name: formData.name,
       phone: formData.contact, // Changed from 'contact' to 'phone' as per prompt
-      address: formData.address,
-      detailAddress: formData.detailAddress,
+      address: isBatch32 ? '32기 수령' : formData.address,
+      detailAddress: isBatch32 ? '' : formData.detailAddress,
       isMember: isBatch32, // Changed from 'isBatch32' to 'isMember'
       memberName: isBatch32 ? formData.batch32Name : '', // Changed to 'memberName'
       orderItems: orderItemsSummary, // Changed to string summary 'orderItems'
@@ -201,7 +205,7 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, items, totalPr
                   className="w-5 h-5 text-navy-900 rounded focus:ring-navy-500 border-gray-300"
                 />
                 <span className="font-bold text-navy-900 text-sm">
-                  저는 32기 부원입니다 <span className="text-red-500">(배송비 무료)</span>
+                  저는 32기 부원입니다
                 </span>
              </label>
              
@@ -255,12 +259,12 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, items, totalPr
           {/* 4. Delivery Form */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold text-navy-900 flex items-center gap-2">
-              배송지 정보 입력
+              주문 정보 입력
               <span className="text-xs font-normal text-red-500">*필수</span>
             </h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">주문자 성함 (배송받는 분)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">주문자 성함</label>
               <input
                 type="text"
                 name="name"
@@ -285,27 +289,30 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, items, totalPr
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="block text-sm font-medium text-gray-700">주소</label>
-              <input
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                placeholder="도로명 주소 (예: 서울시 강남구 테헤란로 123)"
-                disabled={isSubmitting}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-navy-500 focus:border-navy-500 outline-none transition-all"
-              />
-              <input
-                type="text"
-                name="detailAddress"
-                value={formData.detailAddress}
-                onChange={handleInputChange}
-                placeholder="상세 주소 (예: 101동 101호)"
-                disabled={isSubmitting}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-navy-500 focus:border-navy-500 outline-none transition-all"
-              />
-            </div>
+            {/* Address Fields - Only show if NOT 32nd batch */}
+            {!isBatch32 && (
+              <div className="flex flex-col gap-2 animate-fade-in">
+                <label className="block text-sm font-medium text-gray-700">배송지 주소</label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  placeholder="도로명 주소 (예: 서울시 강남구 테헤란로 123)"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-navy-500 focus:border-navy-500 outline-none transition-all"
+                />
+                <input
+                  type="text"
+                  name="detailAddress"
+                  value={formData.detailAddress}
+                  onChange={handleInputChange}
+                  placeholder="상세 주소 (예: 101동 101호)"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-navy-500 focus:border-navy-500 outline-none transition-all"
+                />
+              </div>
+            )}
 
             {/* Conditional Initial Input */}
             {hasSticker && (

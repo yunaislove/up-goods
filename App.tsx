@@ -89,8 +89,8 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Product List */}
-        <div className="space-y-4">
+        {/* Product List - Grid Layout */}
+        <div className="grid grid-cols-2 gap-3 md:gap-4">
           {PRODUCTS.map((product) => (
             <ProductCard
               key={product.id}
