@@ -1,0 +1,5 @@
+{
+  "name": "Club Goods Store",
+  "description": "A simple, mobile-friendly shop for club merchandise with a sticky bottom bar and order summary modal.",
+  "requestFramePermissions": []
+}
