@@ -17,11 +17,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col sm:flex-row p-4 gap-4 border border-gray-100">
       {/* Product Image */}
-      <div className="w-full sm:w-32 h-64 sm:h-32 flex-shrink-0">
+      <div className="w-full sm:w-32 h-64 sm:h-32 flex-shrink-0 bg-gray-50 rounded-xl overflow-hidden relative">
         <img 
           src={product.imageSrc} 
           alt={product.name} 
-          className="w-full h-full object-cover rounded-xl"
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            // Fallback for missing local images
+            e.currentTarget.src = `https://placehold.co/400x400/f1f5f9/334155?text=${encodeURIComponent(product.name.replace(/\(.*\)/, ''))}`;
+          }}
         />
       </div>
 

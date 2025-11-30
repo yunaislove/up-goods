@@ -97,18 +97,23 @@
 
       const SHIPPING_FEE = 3600;
 
-      // 이미지 파일명이 로컬 폴더에 있다고 가정합니다.
+      // [이미지 설정 완료] 사용자 제공 호스팅 이미지 연결
       const PRODUCTS = [
-        { id: 1, name: "b급 감성 노트- A", price: 4200, imageSrc: "./goods1.jpg" },
-        { id: 2, name: "b급 감성 노트- B", price: 4200, imageSrc: "./goods2.jpg" },
-        { id: 3, name: "b급 감성 노트- C", price: 4200, imageSrc: "./goods3.jpg" },
-        { id: 4, name: "b급 감성 노트- D", price: 4200, imageSrc: "./goods4.jpg" },
-        { id: 5, name: "네꾸 스티커-뽀용맛", price: 2200, imageSrc: "./goods5.jpg" },
-        { id: 6, name: "네꾸 스티커-쇠맛", price: 2200, imageSrc: "./goods6.jpg" },
-        { id: 7, name: "네꾸 스티커-스벅맛", price: 2200, imageSrc: "./goods7.jpg" },
-        { id: 8, name: "세트 A (네꾸 스티커-쇠맛+ b급 감성 노트-A )", price: 6200, imageSrc: "./goods8.jpg" },
-        { id: 9, name: "세트 B (네꾸 스티커-뽀용맛+ b급 감성 노트-B)", price: 6200, imageSrc: "./goods9.jpg" },
-        { id: 10, name: "세트 C (네꾸 스티커-스벅맛+ b급 감성 노트-C)", price: 6200, imageSrc: "./goods10.jpg" }
+        // 노트류
+        { id: 1, name: "b급 감성 노트- A", price: 4200, imageSrc: "https://i.ifh.cc/F9bhdk.jpg" }, // 커피 링거 그림
+        { id: 2, name: "b급 감성 노트- B", price: 4200, imageSrc: "https://i.ifh.cc/27R7hl.jpg" }, // 누워있는 토끼
+        { id: 3, name: "b급 감성 노트- C", price: 4200, imageSrc: "https://i.ifh.cc/yRSCsS.jpg" }, // 컴퓨터 하는 토끼
+        { id: 4, name: "b급 감성 노트- D", price: 4200, imageSrc: "https://i.ifh.cc/mHzMol.jpg" }, // 댓글/텍스트
+        
+        // 스티커류
+        { id: 5, name: "네꾸 스티커-뽀용맛", price: 2200, imageSrc: "https://i.ifh.cc/Pavthq.jpg" }, // 파란색 SJ/고양이
+        { id: 6, name: "네꾸 스티커-쇠맛", price: 2200, imageSrc: "https://i.ifh.cc/qrKMhw.jpg" },   // 검정 메탈 SJ/강아지
+        { id: 7, name: "네꾸 스티커-스벅맛", price: 2200, imageSrc: "https://i.ifh.cc/yzMYzG.jpg" },   // 베이지 SJ/튤립
+
+        // 세트류
+        { id: 8, name: "세트 A (네꾸 스티커-쇠맛+ b급 감성 노트-A )", price: 6200, imageSrc: "https://i.ifh.cc/m1PT4T.jpg" },
+        { id: 9, name: "세트 B (네꾸 스티커-뽀용맛+ b급 감성 노트-B)", price: 6200, imageSrc: "https://i.ifh.cc/F3lJsb.jpg" },
+        { id: 10, name: "세트 C (네꾸 스티커-스벅맛+ b급 감성 노트-C)", price: 6200, imageSrc: "https://i.ifh.cc/Ah1DFK.jpg" }
       ];
 
       // ==========================================
@@ -120,14 +125,15 @@
         return (
           <div className="bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col sm:flex-row p-4 gap-4 border border-gray-100">
             {/* Product Image */}
-            <div className="w-full sm:w-32 h-64 sm:h-32 flex-shrink-0 bg-gray-100 rounded-xl overflow-hidden relative">
+            <div className="w-full sm:w-32 h-64 sm:h-32 flex-shrink-0 bg-gray-50 rounded-xl overflow-hidden relative border border-gray-100">
               <img 
                 src={product.imageSrc} 
                 alt={product.name} 
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.target.onerror = null;
-                  // e.target.src = "https://via.placeholder.com/400?text=No+Image"; // Fallback if needed
+                  // 만약 호스팅된 이미지도 로드 실패시 보여줄 대체 이미지
+                  e.target.src = `https://placehold.co/400x400/f1f5f9/334155?text=${encodeURIComponent(product.name.replace(/\(.*\)/, ''))}`;
                 }}
               />
             </div>
